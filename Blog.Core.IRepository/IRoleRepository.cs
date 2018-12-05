@@ -4,9 +4,9 @@ using Blog.Core.Model.Models;
 namespace Blog.Core.IRepository
 {	
 	/// <summary>
-	/// IsysUserInfoRepository
+	/// IRoleRepository
 	/// </summary>	
-	public interface IsysUserInfoRepository : IBaseRepository<sysUserInfo>//类名
+	public interface IRoleRepository : IBaseRepository<Role>//类名
     {
 
        

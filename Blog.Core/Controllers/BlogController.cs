@@ -7,9 +7,11 @@ using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Blog.Core.Model.VeiwModels;
+using Blog.Core.SwaggerHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static Blog.Core.SwaggerHelper.CustomApiVersion;
 
 namespace Blog.Core.Controllers
 {
@@ -71,7 +73,7 @@ namespace Blog.Core.Controllers
             {
                 if (!string.IsNullOrEmpty(item.bcontent))
                 {
-                    item.bRemark = (HtmlHelper.ReplaceHtmlTag(item.bcontent)).Substring(0, 200);
+                    item.bRemark = (HtmlHelper.ReplaceHtmlTag(item.bcontent)).Length >= 200 ? (HtmlHelper.ReplaceHtmlTag(item.bcontent)).Substring(0, 200) : (HtmlHelper.ReplaceHtmlTag(item.bcontent));
                     int totalLength = 500;
                     if (item.bcontent.Length > totalLength)
                     {
@@ -80,10 +82,13 @@ namespace Blog.Core.Controllers
                 }
             }
 
-            var data = new { success = true, page = page, pageCount = TotalCount, data = blogArticleList };
-
-
-            return data;
+            return Ok(new
+            {
+                success = true,
+                page = page,
+                pageCount = TotalCount,
+                data = blogArticleList
+            });
         }
 
 
@@ -98,9 +103,31 @@ namespace Blog.Core.Controllers
         public async Task<object> Get(int id)
         {
             var model = await blogArticleServices.getBlogDetails(id);
-            var data = new { success = true, data = model };
-            return data;
+            return Ok(new
+            {
+                success = true,
+                data = model
+            });
         }
+
+
+        /// <summary>
+        /// 获取博客测试信息 v2版本
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        ////MVC自带特性 对 api 进行组管理
+        //[ApiExplorerSettings(GroupName = "v2")]
+        ////路径 如果以 / 开头，表示绝对路径，反之相对 controller 的想u地路径
+        //[Route("/api/v2/blog/Blogtest")]
+
+        //和上边的版本控制以及路由地址都是一样的
+        [CustomRoute(ApiVersions.v2, "Blogtest")]
+        public async Task<object> V2_Blogtest()
+        {
+            return Ok(new { status = 220, data = "我是第二版的博客信息" });
+        }
+
 
 
     }

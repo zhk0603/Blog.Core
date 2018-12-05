@@ -1,13 +1,13 @@
 using Blog.Core.IRepository;
-using Blog.Core.Model.Models;
 using Blog.Core.Repository.Base;
+using Blog.Core.Model.Models;
 
 namespace Blog.Core.Repository
 {	
 	/// <summary>
-	/// sysUserInfoRepository
+	/// RoleRepository
 	/// </summary>	
-	public class sysUserInfoRepository : BaseRepository<sysUserInfo>, IsysUserInfoRepository
+	public  class RoleRepository : BaseRepository<Role>, IRoleRepository
     {
 
        
